@@ -19,7 +19,10 @@ class Player:
         self.atk = st.PLAYER_ATK
         self.weapon = "knife"  
 
-    def move(self, keys):
+        self.character_image = pygame.image.load('assets/player_charater.png').convert_alpha()
+        self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
+
+    def move(self, keys):   
         if self.hp > 0:
             dx, dy = 0, 0
             self.character_face_direction = [0] * 8
@@ -44,6 +47,7 @@ class Player:
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.character_image, self.rect.topleft)
 
     def _update_character_face_direction(self, dx, dy):
         if dx == 1 and dy == -1:
@@ -72,10 +76,16 @@ class Enemy:
     def __init__(self, name):
         self.name = name
         self.rect = pygame.Rect(random.choice([-40, st.SCREEN_WIDTH]), random.choice([-40, st.SCREEN_HEIGHT]), 40, 40)
-        self.color = st.GREEN
+        self.color = st.BLACK
 
         self.hp = st.ENEMY_HP
         self.atk = st.ENEMY_ATK
+
+        self.character_image = pygame.image.load('assets/zombie_character.png').convert_alpha()
+        self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
+
+
+
 
     def move_towards_player(self, players):
         # Find the closest player by iterating over the list
@@ -95,6 +105,7 @@ class Enemy:
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.character_image, self.rect.topleft)
 
 
         
@@ -102,7 +113,7 @@ def init_characters():
     player1 = Player(
         x = st.SCREEN_WIDTH // 3,
         y = st.SCREEN_HEIGHT // 2,
-        color = st.BLUE,
+        color = st.BLACK,
         controls={
             'up': pygame.K_w,
             'down': pygame.K_s,
@@ -115,7 +126,7 @@ def init_characters():
     player2 = Player(
         x= (st.SCREEN_WIDTH * 2) // 3,
         y= st.SCREEN_HEIGHT // 2,
-        color= st.RED,  # Red color for Player 2
+        color= st.BLACK,  # Red color for Player 2
         controls={
             'up': pygame.K_UP,
             'down': pygame.K_DOWN,
