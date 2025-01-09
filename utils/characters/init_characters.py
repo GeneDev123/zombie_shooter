@@ -10,17 +10,19 @@ class Player:
         self.controls = controls
 
         self.hp = st.PLAYER_HP
+        self.last_damage_time = 0
         self.atk = st.PLAYER_ATK  
 
     def move(self, keys):
-        if keys[self.controls['up']]:
-            self.rect.y -= st.PLAYER_SPEED 
-        if keys[self.controls['down']]:
-            self.rect.y += st.PLAYER_SPEED
-        if keys[self.controls['left']]:
-            self.rect.x -= st.PLAYER_SPEED
-        if keys[self.controls['right']]:
-            self.rect.x += st.PLAYER_SPEED
+        if self.hp > 0:
+            if keys[self.controls['up']]:
+                self.rect.y -= st.PLAYER_SPEED 
+            if keys[self.controls['down']]:
+                self.rect.y += st.PLAYER_SPEED
+            if keys[self.controls['left']]:
+                self.rect.x -= st.PLAYER_SPEED
+            if keys[self.controls['right']]:
+                self.rect.x += st.PLAYER_SPEED
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)

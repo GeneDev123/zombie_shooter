@@ -1,0 +1,17 @@
+January 08, 2025
+
+Todo:
+1 In-game Interface 
+    a. Health Bar for player 1 and player 2 - DONE 
+    b. Restart instruction Label - DONE
+
+2. Game Over and Restart Option 
+    a. Zombie Collision - DONE
+    b. Player HP reduction - DONE 
+
+3. Implement Player Face: If the player is facing N,S,E,W,NE,NW,SE,SW
+
+4. Implement Player Attack 
+    a. Attack Collision
+    b. Zombie HP reduction 
+       

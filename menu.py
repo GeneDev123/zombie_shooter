@@ -1,7 +1,27 @@
 # menu.py
 
 import pygame
+import settings as st
 from settings import SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK
+
+def run_menu(screen, clock):
+    in_menu = True
+    while in_menu:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:  # Enter key starts the game
+                    in_menu = False
+
+                elif event.key == pygame.K_ESCAPE:  # Escape key quits the game
+                    pygame.quit()
+                    return
+
+        draw_menu(screen)
+        pygame.display.flip()
+        clock.tick(st.FPS)
 
 def draw_menu(screen):
     screen.fill(WHITE)
