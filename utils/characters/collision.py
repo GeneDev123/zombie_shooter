@@ -1,20 +1,23 @@
 import settings as st
+from . import character_update as ch_update
 
 def handle_collision(obj1, obj2, type):
     is_collided = False 
     if type == "player" and obj2 is not None:
         # Check if player collides with another object (e.g., obstacle)
         if obj1.rect.colliderect(obj2.rect):
-            print(f"{obj1.name} collided with {obj2.name}.")
+            # print(f"{obj1.name} collided with {obj2.name}.")
             push_back(obj1.rect, obj2.rect)
 
             is_collided = True
     
     elif type == "enemy":
         if obj1.rect.colliderect(obj2.rect):
-            print(f"{obj1.name} collided with {obj2.name}.")
+            # print(f"{obj1.name} collided with {obj2.name}.")
+
             push_back(obj1.rect, obj2.rect)
-     
+            ch_update.character_damage(obj1, "enemy")
+
             is_collided = True
     elif type == "window":
         # Handle collision with the window (screen boundaries)
