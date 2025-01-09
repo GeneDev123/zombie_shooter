@@ -9,9 +9,19 @@ Todo:
     a. Zombie Collision - DONE
     b. Player HP reduction - DONE 
 
-3. Implement Player Face: If the player is facing N,S,E,W,NE,NW,SE,SW
+3. Implement Player Face: If the player is facing N,S,E,W,NE,NW,SE,SW - DONE
 
 4. Implement Player Attack 
-    a. Attack Collision
-    b. Zombie HP reduction 
+    a. Attack Collision -DONE 
+    b. Zombie HP reduction - DONE 
+
+5. Enemy Respawn
+6. Implement Player Score
+
        
+----------
+
+January 09, 2025
+
+Update: 
+-  miii_kunnn joined in the development process, task with giving the characters assets 

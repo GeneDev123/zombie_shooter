@@ -17,6 +17,7 @@ class Player:
         self.hp = st.PLAYER_HP
         self.last_damage_time = 0
         self.atk = st.PLAYER_ATK
+        self.score = 0
         self.weapon = "knife"  
 
         self.character_image = pygame.image.load('assets/player_charater.png').convert_alpha()
@@ -25,7 +26,6 @@ class Player:
     def move(self, keys):   
         if self.hp > 0:
             dx, dy = 0, 0
-            self.character_face_direction = [0] * 8
 
             # Movement and direction logic
             if keys[self.controls['up']]:
@@ -39,6 +39,7 @@ class Player:
 
             # Update position
             if dx != 0 or dy != 0:
+                self.character_face_direction = [0] * 8
                 self.rect.x += dx * st.PLAYER_SPEED
                 self.rect.y += dy * st.PLAYER_SPEED
 
@@ -68,14 +69,13 @@ class Player:
             self.character_face_direction[3] = 1  # W
     
     def attack(self, enemies, atk_type):
-        if(atk_type == "knife"):
+        if(atk_type == "melee"):
             collision.handle_collision(self, enemies, "melee_atk")
-        
 
 class Enemy:
     def __init__(self, name):
         self.name = name
-        self.rect = pygame.Rect(random.choice([-40, st.SCREEN_WIDTH]), random.choice([-40, st.SCREEN_HEIGHT]), 40, 40)
+        self.rect = pygame.Rect(self.set_position()[0], self.set_position()[1], 40, 40)
         self.color = st.BLACK
 
         self.hp = st.ENEMY_HP
@@ -84,14 +84,31 @@ class Enemy:
         self.character_image = pygame.image.load('assets/zombie_character.png').convert_alpha()
         self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
 
+    def set_position(self):
+        side = random.choice(['left', 'right', 'top', 'bottom'])
+        if side == 'left':
+            x = -40 
+            y = random.randint(0, st.SCREEN_HEIGHT)
+        elif side == 'right':
+            x = st.SCREEN_WIDTH + 40
+            y = random.randint(0, st.SCREEN_HEIGHT)
+        elif side == 'top':
+            x = random.randint(0, st.SCREEN_WIDTH) 
+            y = -40 
+        elif side == 'bottom':
+            x = random.randint(0, st.SCREEN_WIDTH)
+            y = st.SCREEN_HEIGHT + 40
 
-
+        return x, y
 
     def move_towards_player(self, players):
         # Find the closest player by iterating over the list
-        closest_player = min(players, key=lambda player: abs(self.rect.centerx - player.rect.centerx) + abs(self.rect.centery - player.rect.centery))
+        closest_player = min(
+            (player for player in players if player.hp > 0), 
+            key=lambda player: abs(self.rect.centerx - player.rect.centerx) + abs(self.rect.centery - player.rect.centery), 
+            default=None
+        )
 
-        
         # Move towards the closest player
         if self.rect.centerx < closest_player.rect.centerx:
             self.rect.x += st.ENEMY_SPEED
@@ -103,12 +120,35 @@ class Enemy:
         elif self.rect.centery > closest_player.rect.centery:
             self.rect.y -= st.ENEMY_SPEED
 
+    def apply_damage(self, damage, fallback_direction):
+        self.hp = self.hp - damage
+
+        fallback_unit = 20
+        is_dead = False
+
+        # [N,E,S,W,NE,NW,SE,SW]
+        if(fallback_direction == [1,0,0,0,0,0,0,0]):
+            self.rect.top = self.rect.top - fallback_unit
+
+        elif(fallback_direction == [0,1,0,0,0,0,0,0]):
+            self.rect.right = self.rect.right + fallback_unit
+
+        elif(fallback_direction == [0,0,1,0,0,0,0,0]):
+            self.rect.top = self.rect.top + fallback_unit
+
+        elif(fallback_direction == [0,0,0,1,0,0,0,0]):
+            self.rect.right = self.rect.right - fallback_unit
+
+        if self.hp < 1: 
+            is_dead = True
+        
+        return is_dead
+
+
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
         screen.blit(self.character_image, self.rect.topleft)
 
-
-        
 def init_characters():
     player1 = Player(
         x = st.SCREEN_WIDTH // 3,
