@@ -2,6 +2,8 @@ import settings as st
 import pygame
 import random
 
+from . import collision
+
 class Player:
     def __init__(self, x, y, color, controls, name):
         self.name = name
@@ -9,24 +11,62 @@ class Player:
         self.color = color
         self.controls = controls
 
+        # Where the player is currently facing: [N,E,S,W,NE,NW,SE,SW]
+        self.character_face_direction = [1,0,0,0,0,0,0,0]
+
         self.hp = st.PLAYER_HP
         self.last_damage_time = 0
-        self.atk = st.PLAYER_ATK  
+        self.atk = st.PLAYER_ATK
+        self.weapon = "knife"  
 
     def move(self, keys):
         if self.hp > 0:
+            dx, dy = 0, 0
+            self.character_face_direction = [0] * 8
+
+            # Movement and direction logic
             if keys[self.controls['up']]:
-                self.rect.y -= st.PLAYER_SPEED 
+                dy -= 1
             if keys[self.controls['down']]:
-                self.rect.y += st.PLAYER_SPEED
+                dy += 1
             if keys[self.controls['left']]:
-                self.rect.x -= st.PLAYER_SPEED
+                dx -= 1
             if keys[self.controls['right']]:
-                self.rect.x += st.PLAYER_SPEED
+                dx += 1
+
+            # Update position
+            if dx != 0 or dy != 0:
+                self.rect.x += dx * st.PLAYER_SPEED
+                self.rect.y += dy * st.PLAYER_SPEED
+
+            # Determine face direction
+            self._update_character_face_direction(dx, dy)
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
 
+    def _update_character_face_direction(self, dx, dy):
+        if dx == 1 and dy == -1:
+            self.character_face_direction[4] = 1  # NE
+        elif dx == -1 and dy == -1:
+            self.character_face_direction[5] = 1  # NW
+        elif dx == 1 and dy == 1:
+            self.character_face_direction[6] = 1  # SE
+        elif dx == -1 and dy == 1:
+            self.character_face_direction[7] = 1  # SW
+        elif dx == 0 and dy == -1:
+            self.character_face_direction[0] = 1  # N
+        elif dx == 1 and dy == 0:
+            self.character_face_direction[1] = 1  # E
+        elif dx == 0 and dy == 1:
+            self.character_face_direction[2] = 1  # S
+        elif dx == -1 and dy == 0:
+            self.character_face_direction[3] = 1  # W
+    
+    def attack(self, enemies, atk_type):
+        if(atk_type == "knife"):
+            collision.handle_collision(self, enemies, "melee_atk")
+        
 
 class Enemy:
     def __init__(self, name):
