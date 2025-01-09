@@ -22,3 +22,9 @@ PLAYER_ATK = 10
 ENEMY_SPEED = 1
 ENEMY_HP = 30
 ENEMY_ATK = 10
+
+SCREEN = None
+
+def set_screen(screen):
+    global SCREEN 
+    SCREEN = screen
