@@ -3,16 +3,14 @@
 import pygame
 from utils.characters import collision, init_characters as init_char
 from utils.user_interface import user_interface
+from utils.user_interface.end_game import run_end_game_page
 from menu import run_menu
 
 def run_game(screen, clock):
-
+    print("RUN GAME")
+    game_settings = init_game_settings()
     characters = init_char.init_characters()
     player1, player2, enemies = characters['player1'], characters['player2'], characters['enemies']
-    
-    enemies_respawn_count = 0
-    last_time_enemy_spawn = 0
-    interval = 10000 #10 sec
     
     running = True
     while running:
@@ -45,10 +43,12 @@ def run_game(screen, clock):
             enemy.move_towards_player(players)
 
         current_time = pygame.time.get_ticks()
-        if current_time - last_time_enemy_spawn >= interval:
-            last_time_enemy_spawn = current_time
-            enemies = enemies + [init_char.Enemy('zombie') for _ in range(3 + enemies_respawn_count)]
-            enemies_respawn_count += 1
+
+        if current_time - game_settings['last_time_enemy_spawn'] >= game_settings['interval']:
+            print(game_settings)
+            game_settings['last_time_enemy_spawn'] = current_time
+            enemies = enemies + [init_char.Enemy('zombie') for _ in range(3 + game_settings['enemies_respawn_count'])]
+            game_settings['enemies_respawn_count'] += 1
 
         # Collision Detections
         collision_detectors(player1, player2, enemies)
@@ -56,6 +56,7 @@ def run_game(screen, clock):
         is_game_over = chk_if_game_over(player1, player2)
         if(is_game_over):
             running = False 
+            run_end_game_page(screen, clock, {'player1': player1, 'player2': player2})
             run_menu(screen, clock)
             run_game(screen, clock)
 
@@ -65,6 +66,13 @@ def run_game(screen, clock):
         pygame.display.flip()
         clock.tick(60)
 
+def init_game_settings():
+    game_settings = {
+        "enemies_respawn_count": 0, 
+        "last_time_enemy_spawn": 0, 
+        "interval": 10000 # 10 sec
+    }
+    return game_settings
 
 def collision_detectors(player1, player2, enemies):
     collision.handle_collision(player1, player2, 'player')

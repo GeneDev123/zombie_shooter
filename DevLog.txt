@@ -15,8 +15,15 @@ Todo:
     a. Attack Collision -DONE 
     b. Zombie HP reduction - DONE 
 
-5. Enemy Respawn
-6. Implement Player Score
+5. Enemy Respawn - DONE
+
+6. Implement Player Score - DONE
+
+7. Implement Background Image
+
+8. Show Score by the end of the game
+
+9. Implement Sound and background music
 
        
 ----------
