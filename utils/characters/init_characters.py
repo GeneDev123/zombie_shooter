@@ -21,7 +21,7 @@ class Player:
         self.score = 0
         self.weapon = "knife"  
 
-        character_img_path = os.path.join(st.BASE_PATH, 'assets', 'player_character.png')
+        character_img_path = os.path.join(st.BASE_PATH, 'assets', 'player_character_left.png')
         self.character_image = pygame.image.load(character_img_path).convert_alpha()
         self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
 
@@ -35,8 +35,14 @@ class Player:
             if keys[self.controls['down']]:
                 dy += 1
             if keys[self.controls['left']]:
+                character_img_path = os.path.join(st.BASE_PATH, 'assets', 'player_character_left.png')
+                self.character_image = pygame.image.load(character_img_path).convert_alpha()
+                self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
                 dx -= 1
             if keys[self.controls['right']]:
+                character_img_path = os.path.join(st.BASE_PATH, 'assets', 'player_character_right.png')
+                self.character_image = pygame.image.load(character_img_path).convert_alpha()
+                self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
                 dx += 1
 
             # Update position
@@ -72,6 +78,7 @@ class Player:
     
     def attack(self, enemies, atk_type):
         if(atk_type == "melee"):
+            
             collision.handle_collision(self, enemies, "melee_atk")
 
 class Enemy:
@@ -112,7 +119,7 @@ class Enemy:
             default=None
         )
 
-        # Move towards the closest player
+        # Move towards the closest player   ENEME HEERE
         if self.rect.centerx < closest_player.rect.centerx:
             self.rect.x += st.ENEMY_SPEED
         elif self.rect.centerx > closest_player.rect.centerx:
