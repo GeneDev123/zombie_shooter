@@ -1,5 +1,15 @@
 # settings.py
 
+
+import sys
+import os
+
+if getattr(sys, 'frozen', False):  # Check if the program is bundled
+    BASE_PATH = sys._MEIPASS
+else:
+    BASE_PATH = os.path.dirname(__file__)
+
+
 # Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600

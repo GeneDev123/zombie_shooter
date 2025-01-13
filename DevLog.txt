@@ -32,3 +32,11 @@ January 09, 2025
 
 Update: 
 -  miii_kunnn joined in the development process, task with giving the characters assets 
+
+----------
+
+January 12, 2025
+
+Update:
+- Use pyinstaller to make the game executable:
+'pipenv run pyinstaller main.py --onefile --windowed --add-data "assets/*;assets" '
