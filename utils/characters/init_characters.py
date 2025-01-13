@@ -1,6 +1,7 @@
 import settings as st
 import pygame
 import random
+import os
 
 from . import collision
 
@@ -20,7 +21,8 @@ class Player:
         self.score = 0
         self.weapon = "knife"  
 
-        self.character_image = pygame.image.load('assets/player_charater.png').convert_alpha()
+        character_img_path = os.path.join(st.BASE_PATH, 'assets', 'player_character.png')
+        self.character_image = pygame.image.load(character_img_path).convert_alpha()
         self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
 
     def move(self, keys):   
@@ -81,7 +83,8 @@ class Enemy:
         self.hp = st.ENEMY_HP
         self.atk = st.ENEMY_ATK
 
-        self.character_image = pygame.image.load('assets/zombie_character.png').convert_alpha()
+        character_img_path = os.path.join(st.BASE_PATH, 'assets', 'zombie_character.png')
+        self.character_image = pygame.image.load(character_img_path).convert_alpha()
         self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
 
     def set_position(self):

@@ -1,5 +1,0 @@
-january 9
-> clone repository
-> create a new branch 'import_game_assets'
-> pipenv install (install packages)
-> activate the pipenv environment command: pipenv shell
