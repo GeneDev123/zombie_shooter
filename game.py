@@ -4,6 +4,7 @@ import pygame
 from utils.characters import collision, init_characters as init_char
 from utils.user_interface import user_interface
 from utils.user_interface.end_game import run_end_game_page
+from utils.sound.main import toggle_ingame_music
 from menu import run_menu
 
 def run_game(screen, clock):
@@ -12,6 +13,8 @@ def run_game(screen, clock):
     characters = init_char.init_characters()
     player1, player2, enemies = characters['player1'], characters['player2'], characters['enemies']
     
+    toggle_ingame_music()
+
     running = True
     while running:
         # Screen Refresh
@@ -25,6 +28,7 @@ def run_game(screen, clock):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:  
                     running = False
+                    toggle_ingame_music()
                     run_menu(screen, clock)
                     run_game(screen, clock)
 
@@ -57,6 +61,7 @@ def run_game(screen, clock):
         if(is_game_over):
             running = False 
             run_end_game_page(screen, clock, {'player1': player1, 'player2': player2})
+            toggle_ingame_music()
             run_menu(screen, clock)
             run_game(screen, clock)
 
