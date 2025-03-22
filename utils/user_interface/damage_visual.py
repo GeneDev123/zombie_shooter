@@ -1,5 +1,4 @@
 import pygame
-import pygame.mixer
 import settings as st
 import os
 

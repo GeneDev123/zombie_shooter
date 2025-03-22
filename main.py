@@ -6,8 +6,6 @@ from menu import draw_menu, run_menu
 from game import run_game
 import settings
 
-
-
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
