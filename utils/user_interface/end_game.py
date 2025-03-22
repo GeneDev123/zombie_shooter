@@ -28,19 +28,26 @@ def draw_endgame(screen, players):
     player1 = players['player1']
     player2 = players['player2']
 
+    # Game over label
     page_label = font.render("YOU'RE DEAD!", True, BLACK)
-    score_label = font.render('Score:', True, BLACK)
-    p1_label = font.render("Player 1: " + str(player1.score), True, BLACK)
-    p2_label = font.render("Player 2: " + str(player2.score), True, BLACK)
-    
-    start_button = font.render("Press ENTER to Start", True, BLACK)
+
+    # Score labels
+    score_label = font.render("Score:", True, BLACK)
+    p1_label = font.render(f"Player 1: {player1.score}", True, BLACK)
+    p2_label = font.render(f"Player 2: {player2.score}", True, BLACK)
+
+    # Buttons
+    start_button = font.render("Press ENTER to Restart", True, BLACK)
     quit_button = font.render("Press ESC to Quit", True, BLACK)
-    
-    screen.blit(page_label, (SCREEN_WIDTH // 2 - page_label.get_width() // 2, 200))
 
-    screen.blit(score_label, (SCREEN_WIDTH // 3 - p1_label.get_width() // 2, 270))
-    screen.blit(p1_label, (SCREEN_WIDTH // 3 - p1_label.get_width() // 2, 320))
-    screen.blit(p2_label, (SCREEN_WIDTH // 3 - p2_label.get_width() // 2 + 200, 320))
+    # Blit elements to screen (centered properly)
+    screen.blit(page_label, (SCREEN_WIDTH // 2 - page_label.get_width() // 2, 150))
+    screen.blit(score_label, (SCREEN_WIDTH // 2 - score_label.get_width() // 2, 220))
 
-    screen.blit(start_button, (SCREEN_WIDTH // 2 - start_button.get_width() // 2, 400))
-    screen.blit(quit_button, (SCREEN_WIDTH // 2 - quit_button.get_width() // 2, 460))
+    # Score positions (centered in two columns)
+    screen.blit(p1_label, (SCREEN_WIDTH // 4 - p1_label.get_width() // 2, 280))
+    screen.blit(p2_label, ((SCREEN_WIDTH * 3) // 4 - p2_label.get_width() // 2, 280))
+
+    # Buttons (centered)
+    screen.blit(start_button, (SCREEN_WIDTH // 2 - start_button.get_width() // 2, 380))
+    screen.blit(quit_button, (SCREEN_WIDTH // 2 - quit_button.get_width() // 2, 440))

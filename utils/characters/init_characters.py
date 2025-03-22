@@ -8,7 +8,7 @@ from . import collision
 class Player:
     def __init__(self, x, y, color, controls, name):
         self.name = name
-        self.rect = pygame.Rect(x, y, 40, 40)
+        self.rect = pygame.Rect(x, y, st.TILE_SIZE + 16, st.TILE_SIZE + 16)
         self.color = color
         self.controls = controls
 
@@ -55,7 +55,6 @@ class Player:
             self._update_character_face_direction(dx, dy)
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
         screen.blit(self.character_image, self.rect.topleft)
 
     def _update_character_face_direction(self, dx, dy):
@@ -84,7 +83,7 @@ class Player:
 class Enemy:
     def __init__(self, name):
         self.name = name
-        self.rect = pygame.Rect(self.set_position()[0], self.set_position()[1], 40, 40)
+        self.rect = pygame.Rect(self.set_position()[0], self.set_position()[1], st.TILE_SIZE + 16, st.TILE_SIZE + 16)
         self.color = st.BLACK
 
         self.hp = st.ENEMY_HP
@@ -156,7 +155,6 @@ class Enemy:
 
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
         screen.blit(self.character_image, self.rect.topleft)
 
 def init_characters():

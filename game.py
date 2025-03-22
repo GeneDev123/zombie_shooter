@@ -51,7 +51,7 @@ def run_game(screen, clock):
         if current_time - game_settings['last_time_enemy_spawn'] >= game_settings['interval']:
             print(game_settings)
             game_settings['last_time_enemy_spawn'] = current_time
-            enemies = enemies + [init_char.Enemy('zombie') for _ in range(3 + game_settings['enemies_respawn_count'])]
+            enemies = enemies + [init_char.Enemy('zombie') for _ in range(1 + game_settings['enemies_respawn_count'])]
             game_settings['enemies_respawn_count'] += 1
 
         # Collision Detections
@@ -75,7 +75,7 @@ def init_game_settings():
     game_settings = {
         "enemies_respawn_count": 0, 
         "last_time_enemy_spawn": 0, 
-        "interval": 10000 # 10 sec
+        "interval": 15000 # 15 sec
     }
     return game_settings
 
@@ -94,6 +94,8 @@ def collision_detectors(player1, player2, enemies):
     collision.handle_collision(player2, None , 'window')
 
 def redraw(screen, player1, player2, enemies):
+    user_interface.get_ingame_background(screen)
+    
     # Draw Characters
     player1.draw(screen)
     player2.draw(screen)
