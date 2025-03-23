@@ -25,6 +25,7 @@ GREEN = (0, 255, 0)
 
 # Frames per second
 FPS = 60
+ANIMATION_DELAY = 6
 
 # Character settings
 PLAYER_SPEED = 3
