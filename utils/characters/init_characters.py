@@ -4,6 +4,7 @@ import random
 import os
 
 from . import collision
+from . import character_animation as char_animate
 
 class Player:
     def __init__(self, x, y, color, controls, name):
@@ -81,7 +82,7 @@ class Player:
             collision.handle_collision(self, enemies, "melee_atk")
 
 class Enemy:
-    def __init__(self, name):
+    def __init__(self, name, enemy_type = "skeleton"):
         self.name = name
         self.rect = pygame.Rect(self.set_position()[0], self.set_position()[1], st.TILE_SIZE + 16, st.TILE_SIZE + 16)
         self.color = st.BLACK
@@ -89,9 +90,10 @@ class Enemy:
         self.hp = st.ENEMY_HP
         self.atk = st.ENEMY_ATK
 
-        character_img_path = os.path.join(st.BASE_PATH, 'assets', 'zombie_character.png')
-        self.character_image = pygame.image.load(character_img_path).convert_alpha()
-        self.character_image = pygame.transform.scale(self.character_image, (self.rect.width, self.rect.height))
+        self.facing_right = False
+        self.character_image_frame = char_animate.init_character_animation(enemy_type)
+        self.frame_index = 0
+        self.animation_counter = 0
 
     def set_position(self):
         side = random.choice(['left', 'right', 'top', 'bottom'])
@@ -118,16 +120,22 @@ class Enemy:
             default=None
         )
 
-        # Move towards the closest player   ENEME HEERE
-        if self.rect.centerx < closest_player.rect.centerx:
-            self.rect.x += st.ENEMY_SPEED
-        elif self.rect.centerx > closest_player.rect.centerx:
-            self.rect.x -= st.ENEMY_SPEED
+        if closest_player:
+            # Determine movement direction
+            move_x = closest_player.rect.centerx - self.rect.centerx
+            move_y = closest_player.rect.centery - self.rect.centery
 
-        if self.rect.centery < closest_player.rect.centery:
-            self.rect.y += st.ENEMY_SPEED
-        elif self.rect.centery > closest_player.rect.centery:
-            self.rect.y -= st.ENEMY_SPEED
+            if move_x > 0: 
+                self.rect.x += st.ENEMY_SPEED
+                self.facing_right = True
+            elif move_x < 0:  # Moving left
+                self.rect.x -= st.ENEMY_SPEED
+                self.facing_right = False
+
+            if move_y > 0:
+                self.rect.y += st.ENEMY_SPEED
+            elif move_y < 0:
+                self.rect.y -= st.ENEMY_SPEED
 
     def apply_damage(self, damage, fallback_direction):
         self.hp = self.hp - damage
@@ -153,9 +161,16 @@ class Enemy:
         
         return is_dead
 
-
     def draw(self, screen):
-        screen.blit(self.character_image, self.rect.topleft)
+        self.animation_counter += 1
+        if self.animation_counter >= st.ANIMATION_DELAY:
+            self.frame_index = (self.frame_index + 1) % len(self.character_image_frame)
+            self.animation_counter = 0
+
+        if self.facing_right:
+            screen.blit(pygame.transform.flip(self.character_image_frame[self.frame_index], True, False), self.rect.topleft)
+        else:
+            screen.blit(self.character_image_frame[self.frame_index], self.rect.topleft)
 
 def init_characters():
     player1 = Player(
